@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "887543201600",
+    "firebase_url": "https://early-waring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "early-waring-system",
+    "storage_bucket": "early-waring-system.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887543201600:android:6ee4d1b1e0f1e1def984a5",
+        "android_client_info": {
+          "package_name": "com.example.earlywarningsystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5ukvwvy2xOpd7O0NrZL3AMxD2amKk7y0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

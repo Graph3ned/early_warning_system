@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Chart marker: dark mode -->
+    <color name="chart_marker_text">#DEE1E1E1</color>
+    <color name="chart_marker_shadow">#40FFFFFF</color>
+</resources>
