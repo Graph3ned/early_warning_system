@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timezone
 
 from database_storage import store_reading
-from firebase_sync import push_to_firebase
+from firebase_sync import request_firebase_sync
 from firebase_device_status import write_device_status
 from gsm_alert import send_no_data_alert
 from ocr_config import (
@@ -229,15 +229,19 @@ class ReadingProcessor:
                 return "ok"
             print(f"Stored reading in database: TEMP={temp_value}C, pH={ph_value}, DO={do_value}mg/L, EC={ec_value} mS/cm, Aeration={aeration_status}")
             try:
-                pushed = push_to_firebase()
-                if pushed > 0:
-                    print(f"Synced {pushed} reading(s) to Firebase")
+                accepted = request_firebase_sync()
+                if accepted:
+                    print("Firebase sync requested (background worker)")
             except Exception as e:
-                print(f"[WARN] Firebase sync error (will retry later): {e}")
-            try:
-                write_device_status("ok")
-            except Exception as e:
-                print(f"[WARN] device_status update failed: {e}")
+                print(f"[WARN] Firebase sync enqueue error: {e}")
+            # Do not block the OCR loop on network calls.
+            def _device_status_safe():
+                try:
+                    write_device_status("ok")
+                except Exception as e:
+                    print(f"[WARN] device_status update failed: {e}")
+
+            threading.Thread(target=_device_status_safe, daemon=True).start()
         else:
             sal_str = f", Salinity={sal_value:.2f} ppt" if sal_value is not None else ""
             print(f"Reading (no DB/Firebase): TEMP={temp_value}C, pH={ph_value}, DO={do_value}mg/L, EC={ec_value} mS/cm{sal_str}, Aeration={aeration_status}")
